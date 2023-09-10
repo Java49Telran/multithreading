@@ -4,6 +4,7 @@ public class Truck extends Thread {
 	
 	private int load;
 	private static long elevator1;
+	private static Object mutex = new Object();
 	public static long getElevator1() {
 		return elevator1;
 	}
@@ -23,8 +24,10 @@ public class Truck extends Thread {
 			loadElevator2(load);
 		}
 	}
-	private static synchronized void loadElevator2(int load) {
-		elevator2 += load;
+	private static  void loadElevator2(int load) {
+		synchronized (mutex) {
+			elevator2 += load;
+		}
 		
 	}
 	private static synchronized void loadElevator1(int load) {
