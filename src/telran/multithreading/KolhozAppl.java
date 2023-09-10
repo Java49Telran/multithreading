@@ -7,9 +7,9 @@ import java.util.stream.IntStream;
 
 public class KolhozAppl {
 
-	private static final int N_TRUCKS = 10;
+	private static final int N_TRUCKS = 1000;
 	private static final int LOAD = 1;
-	private static final int N_LOADS = 10;
+	private static final int N_LOADS = 10000;
 
 	public static void main(String[] args) throws Exception {
 		Truck [] trucks = new Truck[N_TRUCKS];

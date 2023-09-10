@@ -19,15 +19,15 @@ public class Truck extends Thread {
 	@Override
 	public void run() {
 		for (int i = 0; i < nLoads; i++) {
-			loadElevator1();
-			loadElevator2();
+			loadElevator1(load);
+			loadElevator2(load);
 		}
 	}
-	private void loadElevator2() {
+	private static synchronized void loadElevator2(int load) {
 		elevator2 += load;
 		
 	}
-	private void loadElevator1() {
+	private static synchronized void loadElevator1(int load) {
 		elevator1 += load;
 		
 	}
