@@ -9,9 +9,9 @@ import telran.view.*;
 
 public class RaceAppl {
 
-	private static final int MAX_THREADS = 10;
+	private static final int MAX_THREADS = 100000;
 	private static final int MIN_THREADS = 3;
-	private static final int MIN_DISTANCE = 100;
+	private static final int MIN_DISTANCE = 10;
 	private static final int MAX_DISTANCE = 3500;
 	private static final int MIN_SLEEP = 2;
 	private static final int MAX_SLEEP = 5;
@@ -44,8 +44,14 @@ public class RaceAppl {
 	private static void displayResultsTable(Race race) {
 		System.out.println("place\tracer number\ttime");
 		ArrayList<Runner> resultsTable = race.getResultsTable();
-		IntStream.range(0, resultsTable.size()).mapToObj(i ->  toPrintedString(i, race))
-		.forEach(System.out::println);
+		int size = resultsTable.size();
+		int count = 0;
+		for(int i = 1; i < size; i++) {
+			if(resultsTable.get(i-1).getFinsishTime().toEpochMilli() > resultsTable.get(i).getFinsishTime().toEpochMilli()) {
+				count++;
+			}
+		}
+		System.out.printf("count of wrong places: %d\n",count);
 		
 		
 		
