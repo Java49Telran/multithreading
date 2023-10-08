@@ -19,7 +19,7 @@ public class Receiver extends Thread {
 			
 		}
 			} catch (InterruptedException e) {
-				message = messageBox.take(); 
+				message = null; 
 				while((message = messageBox.take()) != null ) {
 					messageProcessing(message);
 				}
