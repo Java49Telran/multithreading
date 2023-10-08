@@ -6,19 +6,26 @@ public class Receiver extends Thread {
 	private MessageBox messageBox;
 
 	public Receiver(MessageBox messageBox) {
-		setDaemon(true); //FIXME
 		this.messageBox = messageBox;
 	}
 	@Override
 	public void run() {
-		while(true) {//FIXME
-			try {
-				String message = messageBox.get();
-				System.out.printf("Thread %d has got message: %s\n", getId(), message);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		String message = null;
+		try {
+			while(true) {//FIXME
+			
+				message = messageBox.get();
+				messageProcessing(message);
+			
 		}
+			} catch (InterruptedException e) {
+				message = messageBox.take(); 
+				while((message = messageBox.take()) != null ) {
+					messageProcessing(message);
+				}
+			}
+	}
+	private void messageProcessing(String message) {
+		System.out.printf("Thread %d has got message: %s\n", getId(), message);
 	}
 }
