@@ -6,11 +6,10 @@ import java.util.concurrent.locks.*;
 
 public class MyLinkedBlockingQueue<E> implements MyBlockingQueue<E> {
 	int limit;
-	private List<E> queue = new LinkedList<>();
+	private LinkedList<E> queue = new LinkedList<>();
 	private Lock monitor = new ReentrantLock();
 	private Condition consumerWaitingCondition = monitor.newCondition();
 	private Condition producerWaitingCondition = monitor.newCondition();
-	
 
 	public MyLinkedBlockingQueue(int limit) {
 		super();
@@ -63,7 +62,7 @@ public class MyLinkedBlockingQueue<E> implements MyBlockingQueue<E> {
 		} finally {
 			monitor.unlock();
 		}
-		
+
 	}
 
 	@Override
@@ -109,14 +108,13 @@ public class MyLinkedBlockingQueue<E> implements MyBlockingQueue<E> {
 					return null;
 				}
 			}
-			E res = queue.remove(0);
-			if (res != null) {
-				producerWaitingCondition.signal();
-			}
-			
+			E res = queue.remove();
+			producerWaitingCondition.signal();
 			return res;
 
-		} finally {
+		} finally
+
+		{
 			monitor.unlock();
 		}
 	}
@@ -125,10 +123,7 @@ public class MyLinkedBlockingQueue<E> implements MyBlockingQueue<E> {
 	public E remove() {
 		try {
 			monitor.lock();
-			if (queue.size() == 0) {
-				throw new NoSuchElementException();
-			}
-			E result = queue.remove(0);
+			E result = queue.remove();
 			producerWaitingCondition.signal();
 			return result;
 		} finally {
@@ -143,7 +138,7 @@ public class MyLinkedBlockingQueue<E> implements MyBlockingQueue<E> {
 			monitor.lock();
 			if (queue.size() != 0) {
 				result = queue.get(0);
-				
+
 			}
 
 			return result;
@@ -156,10 +151,7 @@ public class MyLinkedBlockingQueue<E> implements MyBlockingQueue<E> {
 	public E element() {
 		try {
 			monitor.lock();
-			if (queue.size() == 0) {
-				throw new NoSuchElementException();
-			}
-			return queue.get(0);
+			return queue.element();
 		} finally {
 			monitor.unlock();
 		}
@@ -170,8 +162,9 @@ public class MyLinkedBlockingQueue<E> implements MyBlockingQueue<E> {
 		E result = null;
 		try {
 			monitor.lock();
-			if (queue.size() != 0) {
-				result = queue.remove(0);
+
+			result = queue.poll();
+			if (result != null) {
 				producerWaitingCondition.signal();
 			}
 
@@ -180,7 +173,5 @@ public class MyLinkedBlockingQueue<E> implements MyBlockingQueue<E> {
 			monitor.unlock();
 		}
 	}
-
-	
 
 }
